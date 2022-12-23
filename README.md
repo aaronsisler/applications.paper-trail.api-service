@@ -2,15 +2,22 @@
 
 ## Local Development
 
-PyCharm Config
+### PyCharm Run Configuration
 
 - Module Name
 
-    ```commandline 
-    uvicorn
-    ```
+  ```commandline
+  uvicorn
+  ```
+
 - Parameters
 
-    ```commandline
-    - main:app --reload
-    ```
+  ```commandline
+  - main:app --reload
+  ```
+
+### Running the OpenApi Generator CLI
+
+```bash
+pipenv run openapi-generator version
+```

@@ -8,7 +8,7 @@ fastapi = "*"
 
 [dev-packages]
 uvicorn = "*"
-openapi-python-generator = "*"
+openapi-generator-cli = "*"
 
 [requires]
 python_version = "3.9"
