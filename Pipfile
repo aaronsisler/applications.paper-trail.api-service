@@ -3,13 +3,16 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[scripts]
+dev="uvicorn src.app:app --reload"
+
 [packages]
 fastapi = "*"
+pydantic = "*"
 
 [dev-packages]
 uvicorn = "*"
-openapi-generator-cli = "*"
 
 [requires]
-python_version = "3.9"
-python_full_version = "3.9.16"
+python_version = "3.11"
+python_full_version = "3.11.1"
