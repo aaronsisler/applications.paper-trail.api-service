@@ -4,11 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-dev="uvicorn src.app:app --reload"
+dev="uvicorn app.main:app --reload"
 
 [packages]
 fastapi = "*"
 pydantic = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 uvicorn = "*"
