@@ -1,25 +1,22 @@
-from typing import Union, List
+from typing import Sequence, Union
 
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
+from starlette.responses import RedirectResponse
 
+from app import deps
+from app.dao.user_dao import user_dao
+from app.models.user import User
 from app.routers import institutions_router
-from data_access_layer.database import SessionLocal
-from dtos.user_dto import UserDto
-from models.user import User
 
 app = FastAPI()
 
 app.include_router(institutions_router.router)
 
 
-# Dependency
-def get_db():
-    try:
-        db = SessionLocal()
-        yield db
-    finally:
-        db.close()
+@app.get("/")
+def main():
+    return RedirectResponse(url="/docs/")
 
 
 @app.get("/health")
@@ -32,7 +29,7 @@ def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
 
 
-@app.get("/users/", response_model=List[User])
-def show_records(db: Session = Depends(get_db)):
-    records = db.query(UserDto).all()
-    return records
+@app.get("/users", status_code=200, response_model=Sequence[User])
+def get_users(db: Session = Depends(deps.get_db)) -> dict:
+    users = user_dao.get_all(db=db, limit=10)
+    return users

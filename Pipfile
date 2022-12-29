@@ -10,6 +10,8 @@ dev="uvicorn app.main:app --reload"
 fastapi = "*"
 pydantic = "*"
 sqlalchemy = "*"
+starlette = "*"
+mysqlclient = "*"
 
 [dev-packages]
 uvicorn = "*"
