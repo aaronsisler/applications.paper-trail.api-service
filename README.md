@@ -33,5 +33,5 @@ pipenv run openapi-generator validate -i ./contracts/paper-trail-api-service-v1.
 - Generate the files from contract
 
 ```bash
-pipenv run openapi-generator generate -g python -i ./contracts/paper-trail-api-service-v1.yaml -o ./src
+pipenv run openapi-generator generate -g python -i ./contracts/paper-trail-api-service-v1.yaml -o ./app
 ```

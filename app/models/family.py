@@ -2,7 +2,7 @@ from typing import Optional, List
 
 from pydantic import BaseModel
 
-from src.models.user import User
+from app.models.user import User
 
 
 class Family(BaseModel):
