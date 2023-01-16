@@ -3,13 +3,17 @@ from typing import Union
 from fastapi import FastAPI
 from starlette.responses import RedirectResponse
 
-from app.routers import institutions_router, users_router, intake_raw_transactions_router
+from app.routers import institutions_router, users_router
+from app.routers.intake import intake_raw_transactions_router
 
 app = FastAPI()
 
+# REST Based
 app.include_router(institutions_router.router)
-app.include_router(intake_raw_transactions_router.router)
 app.include_router(users_router.router)
+
+# Event Based
+app.include_router(intake_raw_transactions_router.router)
 
 
 @app.get("/")
