@@ -7,4 +7,4 @@ class IntakeRawTransactionsRequest(BaseModel):
     request_id: str
     institution_name: SupportedInstitution
     account_owner: int
-    data: str
+    file: str

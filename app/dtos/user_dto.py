@@ -7,7 +7,7 @@ from ..dtos.base import Base
 class UserDto(Base):
     user_id = Column(Integer, primary_key=True, index=True)
     principal_id = Column(String(255), index=True)
-    last_name = Column(String(255), index=True)
-    first_name = Column(String(255), index=True)
+    last_name = Column(String(255))
+    first_name = Column(String(255))
     create_date = Column(Date)
     update_date = Column(Date)
