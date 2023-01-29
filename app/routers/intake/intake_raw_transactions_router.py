@@ -28,12 +28,11 @@ def post_intake_raw_transactions(request: IntakeRawTransactionRequest, db: Sessi
     try:
         generic_list = CsvFileParser.parse(request.file)
 
-        created_trans_list = []
+        created_trans_list: list = []
 
         match request.institution:
             case SupportedInstitution.CITI:
-                created_trans_list = CitiRawAccountTransactionIntakeService.intake(generic_list, request.account_id,
-                                                                                   request.user_id, db)
+                created_trans_list = CitiRawAccountTransactionIntakeService.intake(generic_list, request, db)
             case _:
                 pass
 

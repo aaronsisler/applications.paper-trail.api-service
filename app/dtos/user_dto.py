@@ -1,5 +1,4 @@
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.types import Date
 
 from ..dtos.base import Base
 
@@ -9,5 +8,3 @@ class UserDto(Base):
     principal_id = Column(String(255), index=True)
     last_name = Column(String(255))
     first_name = Column(String(255))
-    create_date = Column(Date)
-    update_date = Column(Date)

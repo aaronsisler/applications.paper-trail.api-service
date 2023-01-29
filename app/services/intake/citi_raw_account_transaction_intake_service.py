@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.dao.raw_account_transaction_dao import raw_account_transaction_dao
 from app.mappers.citi_raw_transaction_field_type_mapper import CitiRawTransactionFieldTypeMapper
+from app.models.intake.intake_raw_transaction_request import IntakeRawTransactionRequest
 from app.models.raw_account_transaction import RawAccountTransaction
 from app.utils.date_parser_util import DateParserUtil, DateParserFormat
 from app.utils.intake.csv_type_mapper import CsvTypeMapper
@@ -9,7 +10,7 @@ from app.utils.intake.csv_type_mapper import CsvTypeMapper
 
 class CitiRawAccountTransactionIntakeService:
     @staticmethod
-    def intake(generic_list, account_id: int, user_id: int, db: Session):
+    def intake(generic_list: list, intake_request: IntakeRawTransactionRequest, db: Session):
         created_transactions = []
 
         for item in generic_list:
@@ -25,8 +26,8 @@ class CitiRawAccountTransactionIntakeService:
 
             # Create models from mapper output
             raw_account_transaction = RawAccountTransaction(
-                user_id=user_id,
-                account_id=account_id,
+                user_id=intake_request.user_id,
+                account_id=intake_request.account_id,
                 amount=amount,
                 account_transaction_date=str(trans_date.date()),
                 account_transaction_year=trans_date.year,
