@@ -12,7 +12,10 @@ class CsvTypeMapper:
             for key in raw_object:
 
                 if mapper[key] == MapperType.DECIMAL:
-                    temp_item[key] = Decimal(raw_object[key])
+                    if not raw_object[key]:
+                        temp_item[key] = None
+                    else:
+                        temp_item[key] = Decimal(raw_object[key])
                 elif mapper[key] == MapperType.INTEGER:
                     temp_item[key] = int(raw_object[key])
                 elif mapper[key] == MapperType.BOOLEAN:

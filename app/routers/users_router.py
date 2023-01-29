@@ -18,7 +18,7 @@ def get_user(user_id: int):
     return {"user_id": user_id}
 
 
-@router.get("/", status_code=200, response_model=Sequence[User])
+@router.get("", status_code=200, response_model=Sequence[User])
 def get_users(db: Session = Depends(deps.get_db)) -> dict:
     users = user_dao.get_all(db=db, limit=10)
     return users

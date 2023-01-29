@@ -1,19 +1,16 @@
-import base64
-import csv
 import uuid
 from typing import Sequence
 
-import humps
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app import deps
-from app.dao.raw_account_transaction_dao import raw_account_transaction_dao
-from app.mappers.raw_account_transaction_mapper import RawAccountTransactionMapper
-from app.models.intake.intake_raw_transactions_request import IntakeRawTransactionsRequest
-from app.models.intake.intake_raw_transactions_response import IntakeRawTransactionsResponse
+from app.models.intake.intake_raw_transaction_request import IntakeRawTransactionRequest
+from app.models.intake.intake_raw_transaction_response import IntakeRawTransactionResponse
 from app.models.raw_account_transaction import RawAccountTransaction
-from app.utils.csv_type_mapper import CsvTypeMapper
+from app.models.supported_institution import SupportedInstitution
+from app.services.intake.citi_raw_account_transaction_intake_service import CitiRawAccountTransactionIntakeService
+from app.utils.intake.csv_file_parser import CsvFileParser
 
 router = APIRouter(
     prefix="/intake/raw-transactions",
@@ -21,32 +18,26 @@ router = APIRouter(
 )
 
 
-@router.post("/test", status_code=200, response_model=IntakeRawTransactionsResponse)
-def post_intake_raw_transactions(request: IntakeRawTransactionsRequest):
-    return IntakeRawTransactionsResponse(request_id=request.request_id, receipt_id=str(uuid.uuid4()))
+@router.post("/test", status_code=200, response_model=IntakeRawTransactionResponse)
+def post_intake_raw_transactions(request: IntakeRawTransactionRequest):
+    return IntakeRawTransactionResponse(request_id=request.request_id, receipt_id=str(uuid.uuid4()))
 
 
-@router.post("/", status_code=200, response_model=Sequence[RawAccountTransaction])
-def post_intake_raw_transactions(request: IntakeRawTransactionsRequest, db: Session = Depends(deps.get_db)) -> list:
+@router.post("", status_code=200, response_model=Sequence[RawAccountTransaction])
+def post_intake_raw_transactions(request: IntakeRawTransactionRequest, db: Session = Depends(deps.get_db)) -> list:
     try:
-        # print(request.file)
-        base64_message = request.file.replace("data:text/csv;base64,", "")
+        generic_list = CsvFileParser.parse(request.file)
 
-        bytes_message = base64.b64decode(base64_message)
-        message_lines = str(bytes_message, "utf-8").splitlines()
+        created_trans_list = []
 
-        reader = csv.DictReader(message_lines, delimiter=',')
+        match request.institution:
+            case SupportedInstitution.CITI:
+                created_trans_list = CitiRawAccountTransactionIntakeService.intake(generic_list, request.account_id,
+                                                                                   request.user_id, db)
+            case _:
+                pass
 
-        generic_list = list(reader)
-        raw_trans_list = []
-
-        for item in generic_list:
-            temp_item = CsvTypeMapper.map(vars(RawAccountTransactionMapper()), humps.decamelize(item))
-            raw_account_transaction = RawAccountTransaction.parse_obj(temp_item)
-            db_output_trans = raw_account_transaction_dao.create(db=db, obj_in=raw_account_transaction)
-            raw_trans_list.append(db_output_trans)
-
-        return raw_trans_list
+        return created_trans_list
     except Exception as e:
         print("Exception", e)
         return []

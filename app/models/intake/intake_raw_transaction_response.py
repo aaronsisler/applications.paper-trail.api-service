@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
 
-class IntakeRawTransactionsResponse(BaseModel):
+class IntakeRawTransactionResponse(BaseModel):
     request_id: str
     receipt_id: str
