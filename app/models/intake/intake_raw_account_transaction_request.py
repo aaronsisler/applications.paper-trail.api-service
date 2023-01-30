@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from app.models.supported_institution import SupportedInstitution
 
 
-class IntakeRawTransactionRequest(BaseModel):
+class IntakeRawAccountTransactionRequest(BaseModel):
     request_id: str
     institution: SupportedInstitution
     file: str

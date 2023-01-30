@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from app.models.mapper_type import MapperType
+from app.mappers.mapper_type import MapperType
 
 
 class CsvTypeMapper:

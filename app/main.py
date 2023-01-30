@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
 
 from app.routers import institutions_router, users_router
-from app.routers.intake import intake_raw_transactions_router
+from app.routers.intake import intake_raw_account_transactions_router
 
 app = FastAPI()
 
@@ -14,7 +14,7 @@ app.include_router(institutions_router.router)
 app.include_router(users_router.router)
 
 # Event Based
-app.include_router(intake_raw_transactions_router.router)
+app.include_router(intake_raw_account_transactions_router.router)
 
 origins = ["*"]
 
