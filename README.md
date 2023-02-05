@@ -2,36 +2,11 @@
 
 ## Local Development
 
-### PyCharm Run Configuration
+To run the application locally:
 
-- Module Name
+1. Make sure to have the Docker RDS up and running
+2. Run the following command in the terminal:
 
-  ```commandline
-  uvicorn
-  ```
-
-- Parameters
-
-  ```commandline
-  - main:app --reload
-  ```
-
-### Running the OpenApi Generator CLI
-
-- Check version of OpenApi Generator
-
-```bash
-pipenv run openapi-generator version
-```
-
-- Validate the contract is formatted correctly
-
-```bash
-pipenv run openapi-generator validate -i ./contracts/paper-trail-api-service-v1.yaml
-```
-
-- Generate the files from contract
-
-```bash
-pipenv run openapi-generator generate -g python -i ./contracts/paper-trail-api-service-v1.yaml -o ./app
-```
+    ```bash
+      pipenv run dev
+    ```

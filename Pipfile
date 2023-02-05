@@ -12,6 +12,8 @@ pydantic = "*"
 sqlalchemy = "*"
 starlette = "*"
 mysqlclient = "*"
+python-multipart = "*"
+pyhumps = "*"
 
 [dev-packages]
 uvicorn = "*"
